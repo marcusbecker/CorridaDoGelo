@@ -84,15 +84,14 @@ public class RaceScene extends SceneDefault {
 		background = BitmapFactory.decodeResource(GameConfig.getConfig()
 				.getResources(), R.drawable.fundo);
 
-		/*
-		 * System.out.println("tela");
-		 * System.out.print(GameConfig.getConfig().getWindowWidth() + "x");
-		 * System.out.println(GameConfig.getConfig().getWindowHeight());
-		 * 
-		 * System.out.println("background");
-		 * System.out.print(background.getWidth() + "x");
-		 * System.out.println(background.getHeight());
-		 */
+		System.out.println("*************** TELA *************");
+		System.out.print(GameConfig.getConfig().getWindowWidth() + "x");
+		System.out.println(GameConfig.getConfig().getWindowHeight());
+
+		System.out.println("*** BACKGROUND ***");
+		System.out.print(background.getWidth() + "x");
+		System.out.println(background.getHeight());
+
 	}
 
 	boolean newRamp = true;
@@ -131,6 +130,7 @@ public class RaceScene extends SceneDefault {
 
 	private void playerLogic() {
 		if (!endRace) {
+			// TODO verificar tratamento no sensorChanged
 			if (ice.getPy() >= initPy) {
 				// jogador em posicao de desaceleracao
 				if (vel > MIN_VEL) {
@@ -175,6 +175,7 @@ public class RaceScene extends SceneDefault {
 		if (rampCount == RAMP_TO_END) {
 			if (!ramp.isEnabled()) {
 				EndLineElement end = (EndLineElement) memo.getByElement(5);
+				end.setSize(memo.getElementList()[2].getWidth() + 5, 10);
 				end.show();
 
 				if (end.getPy() > ice.getPy()) {
@@ -191,8 +192,12 @@ public class RaceScene extends SceneDefault {
 		} else {
 			if (!ramp.isEnabled()) {
 				// rampas dinamicas
-				ramp.reset(random.nextInt(6) + 1);
-				// ramp.reset(1);
+				int temp = random.nextInt(6) + 1;
+				
+				// mantem rampa longe da borda
+				temp = temp * memo.getByElement(2).getWidth();
+				ramp.reset(temp);
+
 				rampCount++;
 				newRamp = true;
 			}
@@ -225,16 +230,16 @@ public class RaceScene extends SceneDefault {
 
 		int y = (int) axisY;
 
+		// TODO verificar tratamento no playerLogic
 		if (y < 0) {
-			if (ice.getPy() > initPy - 20) {
+			// Inclinacao para aceleracao
+			if (ice.getPy() > getForwardLimit()) {
 				ice.incPy(axisY);
-				// ice.setPy(initPy - 20);
 			}
 		} else if (y > 0) {
-			if (ice.getPy() < initPy) {
+			if (ice.getAllHeight() < getBackwardLimit()) {
 				ice.incPy(axisY);
 			}
-
 		}
 
 		int x = (int) axisX * -2;
@@ -246,6 +251,14 @@ public class RaceScene extends SceneDefault {
 				&& (ice.getAllWidth() < GameConfig.getConfig().getWindowWidth())) {
 			ice.incPx(x);
 		}
+	}
+
+	private int getForwardLimit() {
+		return GameConfig.getConfig().getWindowHeight() - (ice.getHeight() * 2);
+	}
+
+	private int getBackwardLimit() {
+		return GameConfig.getConfig().getWindowHeight();
 	}
 
 	public float getVel() {

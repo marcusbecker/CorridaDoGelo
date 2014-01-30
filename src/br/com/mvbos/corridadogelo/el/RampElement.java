@@ -13,19 +13,13 @@ import br.com.mvbos.jega.window.GameConfig;
 
 public class RampElement extends ElementModel {
 
-	private final int RAMP_DELAY = -300;
 	private RaceScene scene;
 
 	public RampElement(RaceScene scene) {
-		this(scene, false);
-	}
-
-	public RampElement(RaceScene scene, boolean borderRight) {
 		// #3399CC
 		setDefaultColor(Color.rgb(51, 153, 204));
 		setSize(15, 25);
 		GraphicTool.g().centerWindow(this);
-		setPy(RAMP_DELAY);
 		this.scene = scene;
 	}
 
@@ -65,13 +59,12 @@ public class RampElement extends ElementModel {
 			}
 		} else {
 			// indicacao da onde a rampa vai aparecer
-			canvas.drawCircle(getPx(), 1, 5, p);
+			canvas.drawCircle(getPx(), 1, getWidth() * 0.2f, p);
 		}
 	}
 
-	public void reset(int i) {
-		// setPxy(30, -10);//
-		setPxy(i * 30, RAMP_DELAY);
+	public void reset(int newPX) {
+		setPxy(newPX, -GameConfig.getConfig().getWindowHeight());
 		setEnabled(true);
 	}
 }

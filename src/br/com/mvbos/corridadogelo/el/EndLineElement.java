@@ -55,7 +55,6 @@ public class EndLineElement extends ElementModel {
 	}
 
 	public void show() {
-		setSize(GameConfig.getConfig().getWindowWidth(), 10);
 		setEnabled(true);
 		setVisible(true); 
 	}
