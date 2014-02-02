@@ -54,11 +54,10 @@ public class RaceScene extends SceneDefault {
 		ramp = new RampElement(this);
 
 		ice.setSize(20, 20);
-		ice.setDefaultColor(Color.BLUE);
+		ice.setDefaultColor(Color.BLUE); 
 
 		GraphicTool.g().centerWindow(ice);
-		initPy = GameConfig.getConfig().getWindowHeight() - ice.getHeight()
-				- 10;
+		initPy = GameConfig.getConfig().getWindowHeight() - ice.getHeight() - 10;
 
 		ice.setPy(initPy);
 
@@ -81,8 +80,8 @@ public class RaceScene extends SceneDefault {
 		memo.registerElement(button);
 		// memo.registerElement(new ButtonElement(3, "SAIR"));
 
-		background = BitmapFactory.decodeResource(GameConfig.getConfig()
-				.getResources(), R.drawable.fundo);
+		// TODO mover para setBackground
+		background = BitmapFactory.decodeResource(GameConfig.getConfig().getResources(), R.drawable.fundo);
 
 		System.out.println("*************** TELA *************");
 		System.out.print(GameConfig.getConfig().getWindowWidth() + "x");
@@ -92,6 +91,11 @@ public class RaceScene extends SceneDefault {
 		System.out.print(background.getWidth() + "x");
 		System.out.println(background.getHeight());
 
+	}
+
+	@Override
+	public void startGame() {
+		GameWindow.gs.playSound(0, 1f, -1, 0.2f);
 	}
 
 	boolean newRamp = true;
@@ -155,6 +159,8 @@ public class RaceScene extends SceneDefault {
 				if (newRamp) {
 					playerRamps++;
 					newRamp = false;
+					//GameWindow.gs.setVolume(0, 0f);
+					GameWindow.gs.playSound(1, 1f, 0, 1f);
 				}
 
 			} else if (GraphicTool.g().collide(ice, memo.getByElement(2)) != null
@@ -180,8 +186,8 @@ public class RaceScene extends SceneDefault {
 
 				if (end.getPy() > ice.getPy()) {
 					ScoreElement scoreEl = (ScoreElement) memo.getByElement(6);
-					scoreEl.configure((int) playerScore * (rampCount + 1),
-							(int) playerMaxVel * VEL_PERCEPTION, playerRamps);
+					scoreEl.configure((int) playerScore * (rampCount + 1), (int) playerMaxVel * VEL_PERCEPTION,
+							playerRamps);
 
 					endRace = true;
 					button.setVisible(true);
@@ -193,7 +199,7 @@ public class RaceScene extends SceneDefault {
 			if (!ramp.isEnabled()) {
 				// rampas dinamicas
 				int temp = random.nextInt(6) + 1;
-				
+
 				// mantem rampa longe da borda
 				temp = temp * memo.getByElement(2).getWidth();
 				ramp.reset(temp);
@@ -202,7 +208,30 @@ public class RaceScene extends SceneDefault {
 				newRamp = true;
 			}
 		}
+
+		if (vel == 0f) {
+			GameWindow.gs.pauseSound(0);
+		} else if (vel < 10f) {
+			GameWindow.gs.setRate(0, 0.2f);
+
+		} else if (vel < 20f) {
+			GameWindow.gs.setRate(0, 0.5f);
+
+		} else if (vel < 40f) {
+			GameWindow.gs.setRate(0, 1f);
+
+		} else if (vel < 60f) {
+			GameWindow.gs.setRate(0, 1.5f);
+
+		} else {
+			GameWindow.gs.setRate(0, 2f);
+		}
+
 	}
+
+	float lastVel = 0f;
+
+	// boolean isPSound = false;
 
 	@Override
 	public void clickElement(Click m) {
@@ -247,8 +276,7 @@ public class RaceScene extends SceneDefault {
 		if (x < 0 && (ice.getPx() + x) > 0) {
 			ice.incPx(x);
 
-		} else if (x > 0
-				&& (ice.getAllWidth() < GameConfig.getConfig().getWindowWidth())) {
+		} else if (x > 0 && (ice.getAllWidth() < GameConfig.getConfig().getWindowWidth())) {
 			ice.incPx(x);
 		}
 	}

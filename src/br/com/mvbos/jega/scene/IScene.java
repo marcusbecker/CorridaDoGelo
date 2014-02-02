@@ -24,6 +24,9 @@ public interface IScene {
 
 	public void closeWindow();
 
+	/**
+	 * Chamado ao iniciar load
+	 */
 	public void startScene();
 
 	public IMemory getElements();
@@ -53,5 +56,10 @@ public interface IScene {
 	public void reflashElementPosition(ElementMovableModel e);
 
 	public void sensorChanged(float axisX, float axisY, float axisZ);
+
+	/**
+	 * Chamado ao finalizar load
+	 */
+	public void startGame();
 
 }

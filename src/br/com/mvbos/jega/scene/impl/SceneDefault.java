@@ -68,6 +68,11 @@ public class SceneDefault implements IScene {
 	}
 
 	@Override
+	public void startGame() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
 	public IMemory getElements() {
 		return memo;
 	}

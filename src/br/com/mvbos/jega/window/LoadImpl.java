@@ -32,8 +32,7 @@ public class LoadImpl {
 					Engine.log("start " + System.currentTimeMillis());
 				}
 
-				canvas.drawText("CARREGANDO CENARIO", getWidth(), getHeight(),
-						paint);
+				canvas.drawText("CARREGANDO CENARIO", getWidth(), getHeight(), paint);
 
 				/*
 				 * GraphicUtil.drawString((Graphics2D) g, GraphicUtil.BIG_FONT,
@@ -44,8 +43,7 @@ public class LoadImpl {
 				isLoading++;
 
 			} else if (isLoading == 1) {
-				canvas.drawText("CARREGANDO PLANO DE FUNDO", getWidth(),
-						getHeight(), paint);
+				canvas.drawText("CARREGANDO PLANO DE FUNDO", getWidth(), getHeight(), paint);
 
 				if (scene.getElements().getBackground() != null) {
 					scene.getElements().getBackground().loadElement();
@@ -54,19 +52,17 @@ public class LoadImpl {
 
 				isLoading++;
 
-			} else if (isLoading == 2
-					&& loadElementCount < scene.getElements().getElementCount()) {
+			} else if (isLoading == 2 && loadElementCount < scene.getElements().getElementCount()) {
 
-				canvas.drawText("CARREGANDO ELEMENTOS", getWidth(),
-						getHeight(), paint);
+				canvas.drawText("CARREGANDO ELEMENTOS", getWidth(), getHeight(), paint);
 
-				ElementModel e = scene.getElements().getByElement(
-						loadElementCount++);
+				ElementModel e = scene.getElements().getByElement(loadElementCount++);
 				e.loadElement();
 
 			} else {
 				isLoading = -1;
 				Engine.FREEZE = false;
+				scene.startGame();
 				if (Engine.DEBUG_MODE) {
 					Engine.log("end " + System.currentTimeMillis());
 				}

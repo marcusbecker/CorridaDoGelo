@@ -42,10 +42,17 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 	private final GameEngineModel e;
 	private final Click click = new Click();
 	private final LoadImpl loadDefault;
+	
+	public static GameSound gs;
 
 	public GameWindow(Context context) {
 		super(context);
 		this.context = context;
+		
+		//TODO testes
+		gs = new GameSound(context);
+		gs.load();
+		
 		paint = new Paint();
 		holder = getHolder();
 		loadDefault = new LoadImpl();
@@ -62,6 +69,7 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 	public void pauseGame() {
 		e.pause();
 		sm.unregisterListener(this);
+		gs.stopAll();
 	}
 
 	public void resumeGame() {
