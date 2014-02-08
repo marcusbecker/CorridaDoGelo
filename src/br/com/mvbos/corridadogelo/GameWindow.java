@@ -18,6 +18,8 @@ import android.view.View.OnTouchListener;
 import br.com.mvbos.jega.element.ElementMovableModel;
 import br.com.mvbos.jega.engine.Engine;
 import br.com.mvbos.jega.engine.GameEngineModel;
+import br.com.mvbos.jega.os.GameShockWave;
+import br.com.mvbos.jega.os.GameSound;
 import br.com.mvbos.jega.os.OSTool;
 import br.com.mvbos.jega.scene.Click;
 import br.com.mvbos.jega.scene.IScene;
@@ -44,6 +46,7 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 	private final LoadImpl loadDefault;
 	
 	public static GameSound gs;
+	public static GameShockWave sw;
 
 	public GameWindow(Context context) {
 		super(context);
@@ -52,6 +55,8 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 		//TODO testes
 		gs = new GameSound(context);
 		gs.load();
+		
+		sw = new GameShockWave(context);
 		
 		paint = new Paint();
 		holder = getHolder();

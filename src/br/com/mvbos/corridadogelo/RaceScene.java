@@ -54,7 +54,7 @@ public class RaceScene extends SceneDefault {
 		ramp = new RampElement(this);
 
 		ice.setSize(20, 20);
-		ice.setDefaultColor(Color.BLUE); 
+		ice.setDefaultColor(Color.BLUE);
 
 		GraphicTool.g().centerWindow(ice);
 		initPy = GameConfig.getConfig().getWindowHeight() - ice.getHeight() - 10;
@@ -159,7 +159,7 @@ public class RaceScene extends SceneDefault {
 				if (newRamp) {
 					playerRamps++;
 					newRamp = false;
-					//GameWindow.gs.setVolume(0, 0f);
+					// GameWindow.gs.setVolume(0, 0f);
 					GameWindow.gs.playSound(1, 1f, 0, 1f);
 				}
 
@@ -167,6 +167,8 @@ public class RaceScene extends SceneDefault {
 					|| GraphicTool.g().collide(ice, memo.getByElement(3)) != null) {
 
 				vel -= RAMP_JUMP;
+				if (vel > 0f)
+					GameWindow.sw.vibrate(1);
 			}
 
 			playerScore += vel;

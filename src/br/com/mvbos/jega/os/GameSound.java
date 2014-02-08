@@ -1,8 +1,9 @@
-package br.com.mvbos.corridadogelo;
+package br.com.mvbos.jega.os;
 
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import br.com.mvbos.corridadogelo.R;
 
 public class GameSound {
 
