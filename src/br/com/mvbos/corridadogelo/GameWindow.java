@@ -27,8 +27,7 @@ import br.com.mvbos.jega.window.GameConfig;
 import br.com.mvbos.jega.window.IWindowGame;
 import br.com.mvbos.jega.window.LoadImpl;
 
-public class GameWindow extends SurfaceView implements IWindowGame,
-		OnTouchListener, SensorEventListener {
+public class GameWindow extends SurfaceView implements IWindowGame, OnTouchListener, SensorEventListener {
 
 	private static final boolean drawWallPaper = false;
 
@@ -44,20 +43,20 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 	private final GameEngineModel e;
 	private final Click click = new Click();
 	private final LoadImpl loadDefault;
-	
+
 	public static GameSound gs;
 	public static GameShockWave sw;
 
 	public GameWindow(Context context) {
 		super(context);
 		this.context = context;
-		
-		//TODO testes
+
+		// TODO testes
 		gs = new GameSound(context);
 		gs.load();
-		
+
 		sw = new GameShockWave(context);
-		
+
 		paint = new Paint();
 		holder = getHolder();
 		loadDefault = new LoadImpl();
@@ -79,8 +78,7 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 
 	public void resumeGame() {
 		Sensor defaultSensor = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		boolean accelSupported = sm.registerListener(this, defaultSensor,
-				SensorManager.SENSOR_DELAY_GAME);// SensorManager.SENSOR_DELAY_NORMAL
+		boolean accelSupported = sm.registerListener(this, defaultSensor, SensorManager.SENSOR_DELAY_GAME);// SensorManager.SENSOR_DELAY_NORMAL
 
 		if (!accelSupported) {
 			sm.unregisterListener(this, defaultSensor);
@@ -94,9 +92,21 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 	}
 
 	@Override
+	public void startConfig() {
+		if (GameConfig.getConfig() == null) {
+			GameConfig.init(this, getWidth(), getHeight());
+			GameConfig.getConfig().setResources(getResources());
+
+		} else {
+			GameConfig.getConfig().setWindowWidth(getWidth());
+			GameConfig.getConfig().setWindowHeight(getHeight());
+
+		}
+	}
+
+	@Override
 	public void startGame() {
-		sm = (SensorManager) getContext().getSystemService(
-				Context.SENSOR_SERVICE);
+		sm = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
 
 		e.start();
 
@@ -112,17 +122,12 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 			return;
 		}
 
-		GameConfig.getConfig().setWindowWidth(getWidth());
-		GameConfig.getConfig().setWindowHeight(getHeight());
-
 		Canvas canvas = holder.lockCanvas();
 		paint.setColor(Color.WHITE);
-		canvas.drawRect(0, 0, GameConfig.getConfig().getWindowWidth(),
-				GameConfig.getConfig().getWindowHeight(), paint);
+		canvas.drawRect(0, 0, GameConfig.getConfig().getWindowWidth(), GameConfig.getConfig().getWindowHeight(), paint);
 
 		if (drawWallPaper) {
-			Drawable drawable = WallpaperManager.getInstance(context)
-					.getDrawable();
+			Drawable drawable = WallpaperManager.getInstance(context).getDrawable();
 			canvas.drawBitmap(OSTool.drawableToBitmap(drawable), 0, 0, paint);
 		}
 
@@ -151,9 +156,8 @@ public class GameWindow extends SurfaceView implements IWindowGame,
 			return;
 		}
 
-		if (GameConfig.getConfig() == null) {
-			GameConfig.init(this, getWidth(), getHeight());
-			GameConfig.getConfig().setResources(getResources());
+		if (getWidth() != GameConfig.getConfig().getWindowHeight()) {
+			startConfig();
 		}
 
 		if (!loadDefault.inLoad() && !Engine.FREEZE) {

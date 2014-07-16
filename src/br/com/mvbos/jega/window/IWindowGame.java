@@ -9,6 +9,8 @@ public interface IWindowGame {
 
 	public void freeze(boolean b, int option);
 
+	public void startConfig();
+
 	public void startGame();
 
 	public void resumeGame();
@@ -16,7 +18,7 @@ public interface IWindowGame {
 	public void updateGame();
 
 	public void drawGame();
-	
+
 	public void engineNotification(int id);
 
 	@Deprecated
