@@ -107,7 +107,7 @@ public class GameWindow extends SurfaceView implements IWindowGame, OnTouchListe
 	@Override
 	public void startGame() {
 		sm = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
-
+		startConfig();
 		e.start();
 
 	}
